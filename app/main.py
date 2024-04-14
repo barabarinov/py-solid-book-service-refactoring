@@ -1,5 +1,5 @@
 import json
-import xml.etree.ElementTree as ET
+import xml.etree.ElementTree as Et
 from abc import ABC, abstractmethod
 
 
@@ -61,16 +61,18 @@ class JSONSerialize(SerializeStrategy):
 
 class XMLSerialize(SerializeStrategy):
     def serialize(self, book: Book) -> str:
-        root = ET.Element("book")
-        title = ET.SubElement(root, "title")
+        root = Et.Element("book")
+        title = Et.SubElement(root, "title")
         title.text = book.title
-        content = ET.SubElement(root, "content")
+        content = Et.SubElement(root, "content")
         content.text = book.content
-        return ET.tostring(root, encoding="unicode")
+        return Et.tostring(root, encoding="unicode")
 
 
 def main(book: Book, commands: list[tuple[str, str]]) -> None | str:
-    display_strategies = {"console": ConsoleDisplay(), "reverse": ReverseDisplay()}
+    display_strategies = {
+        "console": ConsoleDisplay(), "reverse": ReverseDisplay()
+    }
     print_strategies = {"console": ConsolePrint(), "reverse": ReversePrint()}
     serialize_strategies = {"json": JSONSerialize(), "xml": XMLSerialize()}
 
