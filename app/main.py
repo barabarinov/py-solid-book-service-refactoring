@@ -1,72 +1,7 @@
-import json
-import xml.etree.ElementTree as Et
-from abc import ABC, abstractmethod
-
-
-class Book:
-    def __init__(self, title: str, content: str) -> None:
-        self.title = title
-        self.content = content
-
-
-class DisplayStrategy(ABC):
-    @abstractmethod
-    def display(self, book: Book) -> None:
-        pass
-
-
-class ConsoleDisplay(DisplayStrategy):
-    def display(self, book: Book) -> None:
-        print(book.content)
-
-
-class ReverseDisplay(DisplayStrategy):
-    def display(self, book: Book) -> None:
-        print(book.content[::-1])
-
-
-class PrintStrategy(ABC):
-    @abstractmethod
-    def print_book(self, book: Book) -> None:
-        pass
-
-
-class ConsolePrint(PrintStrategy):
-    def print_book(self, book: Book) -> None:
-        print(f"Printing the book: {book.title}...")
-        print(book.content)
-
-
-class ReversePrint(PrintStrategy):
-    def print_book(self, book: Book) -> None:
-        print(f"Printing the book in reverse: {book.title}...")
-        print(book.content[::-1])
-
-
-class SerializeStrategy(ABC):
-    @abstractmethod
-    def serialize(self, book: Book) -> str:
-        pass
-
-
-class JSONSerialize(SerializeStrategy):
-    def serialize(self, book: Book) -> str:
-        return json.dumps(
-            {
-                "title": book.title,
-                "content": book.content,
-            }
-        )
-
-
-class XMLSerialize(SerializeStrategy):
-    def serialize(self, book: Book) -> str:
-        root = Et.Element("book")
-        title = Et.SubElement(root, "title")
-        title.text = book.title
-        content = Et.SubElement(root, "content")
-        content.text = book.content
-        return Et.tostring(root, encoding="unicode")
+from book import Book
+from display_strategy import ConsoleDisplay, ReverseDisplay
+from print_strategy import ConsolePrint, ReversePrint
+from serialize_strategy import JSONSerialize, XMLSerialize
 
 
 def main(book: Book, commands: list[tuple[str, str]]) -> None | str:
