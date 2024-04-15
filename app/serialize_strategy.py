@@ -2,6 +2,8 @@ import json
 import xml.etree.ElementTree as Et
 from abc import ABC, abstractmethod
 
+from book import Book
+
 
 class SerializeStrategy(ABC):
 
